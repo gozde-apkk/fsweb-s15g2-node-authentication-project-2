@@ -6,6 +6,7 @@
   Eğer bunları sağlamazsanız Testler geçmez ve diğer yazılımcılar bu repoyu klonladıklarında
   projeyi beklendiği gibi çalıştıramazlar.
  */
+const HASH_ROUND = 12
 module.exports = {
-
+  HASH_ROUND 
 }
