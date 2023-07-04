@@ -1,8 +1,16 @@
 const router = require("express").Router();
+const bcrypt = require("bcryptjs")
+const jwt = requir('jsonwebtoken')
+const User = require('../users/users-model');
 const { usernameVarmi, rolAdiGecerlimi } = require('./auth-middleware');
-const { JWT_SECRET } = require("../secrets"); // bu secret'ı kullanın!
+const { JWT_SECRET, HASH_ROUND } = require("../secrets"); // bu secret'ı kullanın!
 
-router.post("/register", rolAdiGecerlimi, (req, res, next) => {
+
+
+
+
+
+router.post("/register", rolAdiGecerlimi,async (req, res, next) => {
   /**
     [POST] /api/auth/register { "username": "anna", "password": "1234", "role_name": "angel" }
 
@@ -14,6 +22,15 @@ router.post("/register", rolAdiGecerlimi, (req, res, next) => {
       "role_name": "angel"
     }
    */
+  const { username, password} = req.body;
+  try{
+     const hashedPasssord = bcrypt.hashSync(password , HASH_ROUND);
+    const User =  await UserModel.ekle({username:username , password:password});
+    res.status(201).json(user)
+  }catch(error){
+    next(error);
+
+  }
 });
 
 
@@ -36,6 +53,25 @@ router.post("/login", usernameVarmi, (req, res, next) => {
       "role_name": "admin" // giriş yapan kulanıcının role adı
     }
    */
+   const {username , password} = req.body;
+   const [user] = UserModel.goreBul({username:username});
+   if(user && bcrypt.compareSync(password , user.password)){
+    const payload ={
+      subject  :   user.user_id,
+      username :  user.username,
+      role_name: user.role_name
+    }
+    const options={
+      expiresIn : '24h'
+    }
+    //TOKEN OLUŞTURMA
+    const token = jwt.sign(payload, JWT_SECRET,options);
+      res.json({message: `${user.username} geri geldiii!`, token:token})
+
+   }else{
+    next({status:401, message:"Geçersiz kriter"})
+   }
+
 });
 
 module.exports = router;
