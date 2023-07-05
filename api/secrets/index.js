@@ -7,6 +7,8 @@
   projeyi beklendiği gibi çalıştıramazlar.
  */
 const HASH_ROUND = 12
+const JWT_SECRET= process.env.JWT_SECRET || 'shh'
 module.exports = {
-  HASH_ROUND 
+  HASH_ROUND ,
+  JWT_SECRET
 }

@@ -18,6 +18,10 @@ function bul() {
       }
     ]
    */
+
+    return db('users as u ')
+    .select("u.user_id" , "u.username","r.role_name")
+    .leftJoin("roles as r" , 'r.role_id', "u.role_id")
 }
 
 function goreBul(filtre) {
@@ -34,6 +38,9 @@ function goreBul(filtre) {
       }
     ]
    */
+  return db('users as u')
+  .select('u.user_id',"u.username","u.password","r.role_name")
+  .leftJoin("roles as r" , 'r.role_id', "u.role_id").where(filtre)
 }
 
 function idyeGoreBul(user_id) {
@@ -47,6 +54,10 @@ function idyeGoreBul(user_id) {
       "role_name": "instructor"
     }
    */
+    return db('users as u')
+    .select('u.user_id',"u.username","r.role_name")
+    .leftJoin("roles as r" , 'r.role_id', "u.role_id")
+    .where('u.user_id', user_id ).first();
 }
 
 /**

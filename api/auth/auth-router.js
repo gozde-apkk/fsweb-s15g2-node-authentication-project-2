@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const bcrypt = require("bcryptjs")
-const jwt = requir('jsonwebtoken')
-const User = require('../users/users-model');
+const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+const UserModel = require('../users/users-model');
 const { usernameVarmi, rolAdiGecerlimi } = require('./auth-middleware');
 const { JWT_SECRET, HASH_ROUND } = require("../secrets"); // bu secret'ı kullanın!
 

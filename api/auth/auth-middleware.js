@@ -1,6 +1,8 @@
 const { JWT_SECRET } = require("../secrets"); // bu secreti kullanın!
 const UserModel = require("../users/users-model")
 const jwt = require("jsonwebtoken");
+
+
 const sinirli = (req, res, next) => {
 
   const token = req.headers.authorization;
@@ -65,7 +67,7 @@ const usernameVarmi = async (req, res, next) => {
   */
 
     const {username} = req.body;
-    const user = await  UserModel.goreBul({username:username });
+    const[ user ]= await  UserModel.goreBul({username:username });
     if(!user) {
       res.status(401).json({message:"Bu, senin için geçerli değil"})
     }
