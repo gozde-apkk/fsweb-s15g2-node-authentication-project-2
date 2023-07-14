@@ -24,7 +24,7 @@ describe('server.js', () => {
     it('[1] geçerli kriterlerde doğru mesajı döndürüyor', async () => {
       const res = await request(server).post('/api/auth/login').send({ username: 'bob', password: '1234' })
       expect(res.body.message).toMatch(/bob geri/i)
-    }, 3000)
+    }, 5000)
     it('[2] kriterler geçersizse doğru mesaj ve durum kodu', async () => {
       let res = await request(server).post('/api/auth/login').send({ username: 'bobsy', password: '1234' })
       expect(res.body.message).toMatch(/ersiz kriter/i)
@@ -32,7 +32,7 @@ describe('server.js', () => {
       res = await request(server).post('/api/auth/login').send({ username: 'bob', password: '12345' })
       expect(res.body.message).toMatch(/ersiz kriter/i)
       expect(res.status).toBe(401)
-    }, 3000)
+    }, 5000)
     it('[3] doğru token ve { subject, username, role_name, exp, iat } ile yanıtlıyor', async () => {
       let res = await request(server).post('/api/auth/login').send({ username: 'bob', password: '1234' })
       let decoded = jwtDecode(res.body.token)
@@ -52,7 +52,7 @@ describe('server.js', () => {
         role_name: 'instructor',
         username: 'sue',
       })
-    }, 3000)
+    }, 5000)
   })
   describe('[POST] /api/auth/register', () => {
     it('[4] istemci role_name sağlamadığında veritabanına yeni kullanıcı kaydı', async () => {

@@ -69,7 +69,7 @@ const usernameVarmi = async (req, res, next) => {
     const {username} = req.body;
     const[ user ]= await  UserModel.goreBul({username:username });
     if(!user) {
-      res.status(401).json({message:"Bu, senin için geçerli değil"})
+      res.status(401).json({message:"Gecersiz kriter"})
     }
 }
 

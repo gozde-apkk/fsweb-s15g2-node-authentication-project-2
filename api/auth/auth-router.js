@@ -25,8 +25,8 @@ router.post("/register", rolAdiGecerlimi,async (req, res, next) => {
   const { username, password} = req.body;
   try{
      const hashedPasssord = bcrypt.hashSync(password , HASH_ROUND);
-    const User =  await UserModel.ekle({username:username , password:password});
-    res.status(201).json(user)
+    const User =  await UserModel.ekle({username:username , password:hashedPasssord , role_name:req.body.role_name});
+    res.status(201).json(User)
   }catch(error){
     next(error);
 
@@ -34,7 +34,7 @@ router.post("/register", rolAdiGecerlimi,async (req, res, next) => {
 });
 
 
-router.post("/login", usernameVarmi, (req, res, next) => {
+router.post("/login", usernameVarmi, async (req, res, next) => {
   /**
     [POST] /api/auth/login { "username": "sue", "password": "1234" }
 
@@ -54,7 +54,7 @@ router.post("/login", usernameVarmi, (req, res, next) => {
     }
    */
    const {username , password} = req.body;
-   const [user] = UserModel.goreBul({username:username});
+   const [user] = await UserModel.goreBul({username:username});
    if(user && bcrypt.compareSync(password , user.password)){
     const payload ={
       subject  :   user.user_id,
@@ -69,7 +69,7 @@ router.post("/login", usernameVarmi, (req, res, next) => {
       res.json({message: `${user.username} geri geldiii!`, token:token})
 
    }else{
-    next({status:401, message:"Geçersiz kriter"})
+    next({status:401, message:"Gecersiz kriter"})
    }
 
 });
